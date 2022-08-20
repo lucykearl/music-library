@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "prestart": "node utils/create-database.js",
-    "start": "nodemon -r dotenv/config index.js"
+    "start": "nodemon -r dotenv/config index.js",
+    "test": "mocha tests/**/*.js --exit --recursive --timeout 60000 --file ./tests/test-setup.js",
+    "pretest": "node utils/create-database.js test",
+    "posttest": "node utils/drop-database.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +23,7 @@
   "homepage": "https://github.com/lucykearl/music-library#readme",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.33.1",
+    "chai": "^4.3.6",
     "dotenv": "^16.0.1",
     "eslint": "^8.22.0",
     "eslint-config-standard-with-typescript": "^22.0.0",
@@ -27,7 +31,9 @@
     "eslint-plugin-n": "^15.2.4",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.30.1",
+    "mocha": "^10.0.0",
     "nodemon": "^2.0.19",
+    "supertest": "^6.2.4",
     "typescript": "^4.7.4"
   },
   "dependencies": {
