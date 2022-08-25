@@ -1,6 +1,7 @@
+const router = require('../routes/artist');
 const getDb = require('../services/db');
 
-exports.create = async (req, res) => {
+const createArtist  = async (req, res) => {
     const db = await getDb();
     const { name, genre } = req.body;
   
@@ -17,7 +18,7 @@ exports.create = async (req, res) => {
     db.close();
   };
 
-  exports.read = async (_, res) => {
+  const readArtist = async (_, res) => {
     const db = await getDb();
   
     try {
@@ -30,7 +31,7 @@ exports.create = async (req, res) => {
     db.close();
   };
 
-  exports.readById = async (req, res) => {
+  const readArtistById = async (req, res) => {
     const db = await getDb();
     const { artistId } = req.params;
   
@@ -46,3 +47,42 @@ exports.create = async (req, res) => {
   
     db.close();
   };
+
+  const updateArtist = async (req, res) => {
+    const db = await getDb();
+    const data = req.body;
+    const { artistId } = req.params;
+  
+    try {
+      const [
+        { affectedRows },
+      ] = await db.query('UPDATE Artist SET ? WHERE id = ?', [data, artistId]);
+  
+      if (!affectedRows) {
+        res.sendStatus(404);
+      } else {
+        res.status(200).send();
+      }
+    } catch (err) {
+      res.sendStatus(500);
+    }
+  
+    db.close();
+  };
+
+  const deleteArtist = async (req, res) => {
+    const db = await getDb();
+    const { artistId } = req.params;
+    const [{ affectedRows }] = await db.query(`DELETE FROM Artist WHERE id = ?`, [
+      artistId,
+    ]);
+  
+    if (!affectedRows) {
+      res.sendStatus(404);
+    } else {
+      res.status(200).send();
+    }
+    db.end();
+  };
+  
+module.exports = { createArtist, readArtist, readArtistById, updateArtist, deleteArtist }

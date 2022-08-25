@@ -3,10 +3,14 @@ const artistController = require('../controllers/artist');
 
 const router = express.Router();
 
-router.post('/', artistController.create);
+router.post('/', artistController.createArtist);
 
-router.get('/', artistController.read);
+router.get('/', artistController.readArtist);
 
-router.get('/:artistId', artistController.readById);
+router.get('/:artistId', artistController.readArtistById);
+
+router.patch('/:artistId', artistController.updateArtist);
+
+router.delete('/artist/:artistId', artistController.deleteArtist);
 
 module.exports = router;
